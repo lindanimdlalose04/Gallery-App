@@ -1,6 +1,433 @@
 body {
     margin: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: url("/static/images/zebra.jpg");
+    background-size: cover;
+    min-height: 10vh;   
+    padding: 10px;
+}
+.back-btn {
+    padding: 10px 30px;
+    width: 200px;
+    cursor: pointer;
+    border-radius: 15px;
+    font-size: 16px;
+    background-color:rgba(0, 17, 255, 0);
+    color: rgba(255, 255, 255, 0.998);
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 4px;
+    border: 1px solid #fffffff3;
+}
+
+.back-btn:hover {
+
+    transform: translateX(-3px);
+    background-color: rgba(255, 255, 255, 0.205);
+    transition: 0.3s;
+}
+
+.gallery-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-top: 50px;
+}
+.gallery-container h1 {
+    text-align: center;
+    color: rgb(225, 255, 255);
+    font-size: 2.5em;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+}
+
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 120px;
+    max-height: 100vh;
+}
+
+.category {
+    background: rgba(150, 161, 169, 0.95);
+    border-radius: 20px;
+    padding: 5px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    opacity: 0.93;
+}
+
+.category h2 {
+    color: #000000;
+    font-size: 1.4em;
+    margin-bottom: 15px;
+    text-align: center;
+    border-bottom: 2px solid #01020e;
+    padding-bottom: 8px;
+    flex-shrink: 0;
+}
+
+.slider-container {
+    position: relative;
+    width: 100%;
+    height: 250px;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    flex-grow: 1;
+}
+
+.image-container {
+    display: flex;
+    transition: transform 0.4s ease-in-out;
+    height: 100%;
+}
+
+.image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    z-index: 10;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn:hover {
+    background: rgba(67, 64, 64, 0.9);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.btn.prev {
+    left: 10px;
+}
+
+.btn.next {
+    right: 10px;
+}
+
+.view-full-btn {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(72, 90, 134, 0.612);
+    color: white;
+    border: none;
+    padding: 6px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.3s ease;
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.view-full-btn:hover {
+    background: rgb(144, 178, 223);
+    transform: translateX(-50%) scale(1.05);
+}
+
+/* Full Screen Styles */
+.fullscreen-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.98);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.fullscreen-overlay.active {
+    display: flex;
+}
+
+.close-fullscreen {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    z-index: 2001;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.close-fullscreen:hover {
+    background: white;
+    transform: scale(1.05);
+}
+
+.fullscreen-container {
+    position: relative;
+    width: 95%;
+    height: 95%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.fullscreen-image-container {
+    display: flex;
+    transition: transform 0.4s ease-in-out;
+    height: 100%;
+    width: 100%;
+}
+
+.fullscreen-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.fullscreen-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.8);
+    color: #333;
+    border: none;
+    padding: 15px;
+    cursor: pointer;
+    font-size: 20px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    z-index: 2001;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fullscreen-btn:hover {
+    background: white;
+    transform: translateY(-50%) scale(1.1);
+}
+
+.fullscreen-btn.prev {
+    left: 20px;
+}
+
+.fullscreen-btn.next {
+    right: 20px;
+}
+/* =========================
+   MOBILE RESPONSIVE STYLES
+   ========================= */
+@media (max-width: 768px) {
+
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    .gallery-container {
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 1.6rem;
+        text-align: center;
+    }
+
+    /* Stack categories instead of grid */
+    .categories-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .category {
+        width: 100%;
+    }
+
+    .category h2 {
+        font-size: 1.2rem;
+        text-align: center;
+    }
+
+    /* Image slider */
+    .slider-container {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .image-container {
+        display: flex;
+        transition: transform 0.3s ease;
+    }
+
+    .image-container img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+
+    /* Bigger buttons for fingers */
+    .btn,
+    .fullscreen-btn {
+        font-size: 1.5rem;
+        padding: 10px;
+    }
+
+    .view-full-btn {
+        width: 100%;
+        padding: 10px;
+        font-size: 1rem;
+    }
+
+    /* Top buttons */
+    .back-btn,
+    .add-btn {
+        position: fixed;
+        top: 10px;
+        z-index: 1000;
+    }
+
+    .back-btn {
+        left: 10px;
+    }
+
+    .add-btn {
+        right: 10px;
+    }
+
+    /* Fullscreen mode */
+    .fullscreen-container {
+        width: 100%;
+        height: 100%;
+    }
+
+    .fullscreen-image-container img {
+        width: 100%;
+        height: auto;
+    }
+}
+@media (max-width: 768px) {
+    .manage-panel form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    select, input, button {
+        font-size: 1rem;
+        padding: 10px;
+    }
+}
+
+
+/* Modal */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 3000;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal {
+    background: white;
+    padding: 25px;
+    border-radius: 16px;
+    width: 320px;
+    text-align: center;
+}
+
+.modal input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 15px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.primary-btn {
+    background: #007aff;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+}
+
+.secondary-btn {
+    background: #e5e5ea;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+}
+
+.add-collection-wrapper {
+    display: flex;
+    justify-content: center;
+    margin: 40px 0 60px;
+}
+
+.add-collection-btn {
+    background: rgba(255,255,255,0.9);
+    border: none;
+    padding: 14px 26px;
+    border-radius: 999px;
+    font-size: 16px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.add-collection-btn:hover {
+    background: white;
+    transform: translateY(-2px);
+}
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: url("/static/uploads/zebra.jpg");
     background-size: cover;
     min-height: 10vh;   
