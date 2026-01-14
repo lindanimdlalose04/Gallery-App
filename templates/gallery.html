@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/gallery.css') }}">
+    <script src="{{ url_for('static', filename='js/gallery.js') }}" defer></script>
+</head>
+
+<body>
+
+
+<!-- Back -->
+<div class="back-btn" id="backBtn">
+    <a >
+        <i class="fa-solid fa-arrow-left"></i> Back
+    </a>
+</div>
+
+<!-- ================= GALLERY ================= -->
+<div class="gallery-container">
+    <h1>ICE QUEEN Moments</h1>
+     <!-- ADD NEW COLLECTION -->
+                    <div class="add-collection-wrapper">
+                        <button class="add-collection-btn" onclick="openAddCategoryModal()">
+                            <i class="fa-solid fa-plus"></i>
+                            New Collection
+                        </button>
+                    </div>
+    <div class="categories-grid">
+        {% for category in categories %}
+        <div class="category">
+
+            <!-- CATEGORY HEADER -->
+            <div class="category-header">
+                <h2>{{ category.name }}</h2>
+
+                <div class="category-actions">
+                    <!-- ADD IMAGE -->
+                    <form method="POST" action="{{ url_for('gallery') }}" enctype="multipart/form-data">
+                        <input type="hidden" name="action" value="add_image">
+                        <input type="hidden" name="category_id" value="{{ category.id }}">
+                        <label class="icon-btn">
+                            <i class="fa-solid fa-plus"></i>
+                            <input type="file" name="image" accept="image/*" hidden onchange="this.form.submit()">
+                        </label>
+                    </form>
+                    
+
+        
+                    <!-- RENAME -->
+                    <button class="icon-btn"
+                            onclick="openRenameModal('{{ category.id }}', '{{ category.name }}')">
+                        <i class="fa-solid fa-pen"></i>
+                    </button>
+
+                    <!-- DELETE -->
+                    <form method="POST" action="{{ url_for('gallery') }}"
+                          onsubmit="return confirm('Delete this collection and all images?')">
+                        <input type="hidden" name="action" value="delete_category">
+                        <input type="hidden" name="category_id" value="{{ category.id }}">
+                        <button class="icon-btn danger">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- SLIDER -->
+            <div class="slider-container">
+                <div class="image-container">
+                    {% for img in category.images %}
+                    <img src="{{ url_for('static', filename='uploads/' + img.filename) }}">
+                    {% endfor %}
+                </div>
+
+                <i class="fa-solid fa-angles-left btn prev"></i>
+                <i class="fa-solid fa-angles-right btn next"></i>
+                <button class="view-full-btn">View Full Screen</button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- ================= RENAME MODAL ================= -->
+<div class="modal-overlay" id="renameModal">
+    <div class="modal">
+        <h3>Rename Collection</h3>
+
+        <form method="POST" action="{{ url_for('gallery') }}">
+            <input type="hidden" name="action" value="rename_category">
+            <input type="hidden" name="category_id" id="renameCategoryId">
+
+            <input type="text" name="new_name" id="renameInput" required>
+
+            <div class="modal-actions">
+                <button type="button" class="secondary-btn" onclick="closeRenameModal()">Cancel</button>
+                <button type="submit" class="primary-btn">Save</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ================= ADD CATEGORY MODAL ================= -->
+<div class="modal-overlay" id="addCategoryModal">
+    <div class="modal">
+        <h3>New Collection</h3>
+
+        <form method="POST" action="{{ url_for('gallery') }}">
+            <input type="hidden" name="action" value="add_category">
+
+            <input type="text"
+                   name="category_name"
+                   placeholder="Collection name"
+                   required>
+
+            <div class="modal-actions">
+                <button type="button"
+                        class="secondary-btn"
+                        onclick="closeAddCategoryModal()">
+                    Cancel
+                </button>
+                <button type="submit" class="primary-btn">
+                    Create
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<!-- ================= FULLSCREEN ================= -->
+<div class="fullscreen-overlay" id="fullscreenOverlay">
+    <div class="close-fullscreen" id="closeFullscreen">
+        <i class="fa-solid fa-xmark"></i> Close
+    </div>
+
+    <div class="fullscreen-container">
+        <div class="fullscreen-image-container" id="fullscreenImageContainer"></div>
+        <i class="fa-solid fa-angles-left fullscreen-btn prev" id="fullscreenPrev"></i>
+        <i class="fa-solid fa-angles-right fullscreen-btn next" id="fullscreenNext"></i>
+    </div>
+</div>
+</body>
+</html>
