@@ -1,8 +1,10 @@
+
 //initialise the gallery
 document.addEventListener('DOMContentLoaded', function() {
     initializeSliders();
     setupEventListeners();
-});
+})
+
 
 function initializeSliders() {
     const categories = document.querySelectorAll('.category');
@@ -43,6 +45,9 @@ function initializeSliders() {
     });
 }
 
+
+
+
 function setupEventListeners() {
     // Back button to main page
     const backBtn = document.getElementById('backBtn');
@@ -59,15 +64,14 @@ function setupEventListeners() {
             openFullscreen(categoryDiv);
         });
     });
-    
+    //add
    const addBtn = document.getElementById('AddBtn');
     if (addBtn) {
         addBtn.addEventListener('click', () => {
             window.location.href = '/gallery';
     });
     }
-
-
+   
     // Close fullscreen
     const closeBtn = document.getElementById('closeFullscreen');
     if (closeBtn) closeBtn.addEventListener('click', closeFullscreen);
@@ -86,13 +90,12 @@ function openFullscreen(categoryDiv) {
     const container = document.getElementById('fullscreenImageContainer');
     container.innerHTML = '';
 
-    // Grab all images from this category
     currentFullscreenImages = Array.from(categoryDiv.querySelectorAll('img'));
     currentFullscreenIndex = 0;
 
-    // Clone images into fullscreen container
     currentFullscreenImages.forEach(img => {
         const clone = img.cloneNode();
+        clone.style.display = 'none';
         container.appendChild(clone);
     });
 
@@ -105,8 +108,11 @@ function closeFullscreen() {
 }
 
 function updateFullscreenSlider() {
-    const container = document.getElementById('fullscreenImageContainer');
-    container.style.transform = `translateX(-${currentFullscreenIndex * 100}%)`;
+    const images = document.querySelectorAll('#fullscreenImageContainer img');
+    images.forEach((img, i) => {
+        img.style.display = i === currentFullscreenIndex ? 'block' : 'none';
+    });
+    
 }
 
 function nextFullscreenImage() {
@@ -173,3 +179,23 @@ function closeAddCategoryModal() {
     document.getElementById('addCategoryModal').classList.remove('active');
 }
 
+/*
+function deleteCurrentImage() {
+    if (currentFullscreenImages.length === 0) return;
+
+    const imgToDelete = currentFullscreenImages[currentFullscreenIndex];
+    imgToDelete.remove();
+
+    currentFullscreenImages.splice(currentFullscreenIndex, 1);
+
+    if (currentFullscreenIndex >= currentFullscreenImages.length) {
+        currentFullscreenIndex = currentFullscreenImages.length - 1;
+    }
+
+    if (currentFullscreenImages.length === 0) {
+        closeFullscreen();
+        return;
+    }
+
+    updateFullscreenSlider();
+}*/

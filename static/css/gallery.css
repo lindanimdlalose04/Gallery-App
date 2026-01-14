@@ -1,7 +1,7 @@
 body {
     margin: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: url("/static/images/ape2.jpg");
+    background: url("/static/uploads/zebra.jpg");
     background-size: cover;
     min-height: 10vh;   
     padding: 10px;
